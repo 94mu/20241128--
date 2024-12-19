@@ -10,5 +10,5 @@ D = np.linalg.inv(C)
 
 result = C@B@B@B@D
 
-#print(A@A@A)
-#print(result)
+print(A@A@A)
+print(result)
