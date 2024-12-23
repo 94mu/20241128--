@@ -90,7 +90,6 @@ plot_PCA(x, y)
 
 '''
 
-
 # ---------------------------------- 第六章 凸优化 --------------------------------------
 '''
 # 导入相关库
@@ -189,5 +188,46 @@ def grad_descent(grad, p_current, learning_rate, precision, iters_max):
 if __name__ == '__main__':
 #   grad_descent(grad_1, x_current=5, learning_rate=0.1, precision=0.000001, iters_max=10000)
 #   grad_descent(grad_2, p_current=np.array([1, -1]), learning_rate=0.1, precision=0.000001, iters_max=10000)
+
+'''
+
+#---------------------------------- 第七章 线性回归 --------------------------------------
+'''
+# 房价预测
+
+## 导入相关库
+### numpy、pandas
+import numpy as np
+import pandas as pd
+### 数据分割器
+from sklearn.model_selection import train_test_split
+### 线性回归模型
+from sklearn.linear_model import LinearRegression
+### 性能评估
+from sklearn.metrics import mean_squared_error
+
+## 输入数据
+data_url = "http://lib.stat.cmu.edu/datasets/boston"
+raw_df = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
+### 明确特征变量和目标变量
+x = np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]])
+y = raw_df.values[1::2, 2]
+
+## 数据预处理
+### 使用数据分割器将样本数据分割为训练数据和测试数据，其中测试数据占比25%。
+x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=33, test_size=0.25)
+
+## 模型训练
+### 使用默认配置初始化线性回归器
+lr = LinearRegression()
+### 使用训练数据来估计参数，也就是通过训练数据的学习，为线性回归器找到一组合适的参数，从而获得一个带有参数的、具体的线性回归模型
+lr.fit(x_train, y_train)
+
+## 模型预测
+### 对测试数据进行预测。利用上述训练数据学习得到的带有参数的、具体的线性回归模型对测试数据进行预测，即将测试数据中每一条记录的特征变量（例如房间数、不动产税率等）输入该线性回归模型中，得到一个该条记录的预测值
+lr_y_predict = lr.predict(x_test)
+
+## 性能评估
+print("MSE: ", mean_squared_error(y_test, lr_y_predict))
 
 '''
