@@ -231,3 +231,50 @@ lr_y_predict = lr.predict(x_test)
 print("MSE: ", mean_squared_error(y_test, lr_y_predict))
 
 '''
+
+#---------------------------------- 第八章 逻辑回归 --------------------------------------
+'''
+# 用逻辑回归分类器来对sklearn自带的乳腺癌数据集进行学习和预测
+
+## 导入相关库
+### 数据集
+from sklearn.datasets import load_breast_cancer
+### 数据分割器
+from sklearn.model_selection import train_test_split 
+### 数据标准化
+from sklearn.preprocessing import StandardScaler
+### 学习模型
+from sklearn.linear_model import LogisticRegression
+### 性能评估
+from sklearn.metrics import classification_report
+
+
+## 输入数据
+### 加载数据集
+breast_cancer = load_breast_cancer()
+### 分离出特征变量和目标变量
+x = breast_cancer.data
+y = breast_cancer.target
+
+## 数据预处理
+### 使用数据分割器将样本数据分割为训练数据和测试数据
+x_train, x_test, y_train,  y_test = train_test_split(x, y, random_state=33, test_size=0.3)
+### 对数据进行标准化处理，使得每个特征维度的均值为0，方差为1，防止受到某个维度特征数值较大的影响
+breast_cancer_ss = StandardScaler()
+x_train = breast_cancer_ss.fit_transform(x_train)
+x_test = breast_cancer_ss.transform(x_test)
+
+## 模型训练
+### 从sklearn.linear_model中选用逻辑回归模型LogtisticRegression来学习
+#### 使用默认配置初始化逻辑线性回归器
+LR = LogisticRegression()
+#### 进行训练
+LR.fit(x_train, y_train)
+#### 结果预测
+LR_y_predict = LR.predict(x_test)
+
+## 性能评估
+print("Accuracy: ", LR.score(x_test, y_test))
+print(classification_report(y_test, LR_y_predict, target_names=['benign', 'maligant']))
+
+'''
