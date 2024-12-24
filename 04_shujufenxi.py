@@ -1,3 +1,149 @@
+# -------------------------------------------- 二、NumPy基础 -----------------------------------------------
+## 导入numpy库
+import numpy as np
+
+## 2.1 创建数组
+### 2.1.1 np.arr(列表或元组)
+'''
+#### [1 2 3 4 5]
+arr = np.array([1, 2, 3, 4, 5]) 
+arr = np.array((1, 2, 3, 4, 5)) 
+'''
+### 2.1.2 np.arange(start, end, step)
+'''
+#### np.arange()和range()非常相似，但：range()的步长只能是整数，而np.arange()的步长可以是任意数。
+#### np.arange()只能创建一维数组
+#### [0 1 2 3 4 5 6 7 8 9]
+arr = np.arange(10) 
+arr = np.arange(0, 10)
+arr = np.arange(0, 10, 1)
+#### [1.5 3.5 5.5 7.5 9.5]
+arr = np.arange(1.5, 10.5, 2)
+'''
+### 2.1.3 np.linspace(start, end, num, endpoint=True或False)
+'''
+arr = np.linspace(0, 10, 20)
+arr = np.linspace(0, 10, 20, endpoint=False)
+'''
+### 2.1.4 np.zeros((a, b, ..., n), dtype=int或float) 和 np.ones((a, b, ..., n), dtype=int或float)
+'''
+#### 默认情况下，得到的数组元素都是float类型，可以使用dtype=int将数组元素定义成int类型
+arr1 = np.zeros([3, 3])
+arr1 = np.zeros((3, 3))
+arr1 = np.zeros(shape=(3, 3))
+
+arr2 = np.ones([3, 3])
+arr2 = np.ones((3, 3))
+arr2 = np.ones(shape=(3, 3))
+'''
+### 2.1.5 np.random.randint(start, end, size=元组或整数)
+'''
+#### 一维
+arr = np.random.randint(10, 20, size=(5))
+arr = np.random.randint(10, 20, size=5)
+arr = np.random.randint(10, 20, 5)
+#### 二维
+arr = np.random.randint(10, 20, size=(2, 5))
+arr = np.random.randint(10, 20, (2, 5))
+'''
+### 2.1.6 np.random.rand(m, n)
+'''
+#### 元素都是[1,0)内的浮点数
+#### 一维
+arr = np.random.rand(5)
+#### 二维
+arr = np.random.rand(2, 5)
+'''
+### 2.1.7 np.random.randn(m, n)
+'''
+#### 一维
+arr = np.random.randn(5)
+#### 二维
+arr = np.random.randn(2, 5)
+'''
+
+## 2.2 数组属性
+'''
+### 一维
+nums_1 = [1, 2, 3, 4, 5, 6, 7, 8]
+arr_1 = np.array(nums_1)
+### 二维
+nums_2 = [[1, 2, 3, 4], [5, 6, 7, 8]]
+arr_2 = np.array(nums_2)
+### 三维
+nums_3 =  [[[1, 2, 3], [1, 5, 6]], [[1, 3, 3], [4, 5, 6]]]
+arr_3 = np.array(nums_3)
+'''
+### 2.2.1 维度 ndim
+'''
+arr_1.ndim # 1
+arr_2.ndim # 2
+arr_3.ndim # 3
+'''
+### 2.2.2 形状 shape
+'''
+arr_1.shape # (8,)
+arr_2.shape # (2, 4)
+arr_3.shape # (2, 2, 3)
+'''
+### 2.2.3 元素个数 size
+'''
+arr_1.size # 8
+arr_2.size # 8
+arr_3.size # 12
+'''
+### 2.2.4 元素类型 dtype
+'''
+arr_1.dtype # int32
+arr_2.dtype # int32
+arr_3.dtype # int32
+'''
+
+## 2.3 元素操作
+### 2.3.1 访问元素
+'''
+#### 一维数组
+nums = [3, 9, 1, 12, 50, 21]
+arr = np.array(nums)
+arr[0] # 3
+#### 二维数组
+nums = [[1, 3, 5, 7, 9], [2, 4, 6, 8, 10]]
+arr = np.array(nums)
+arr[1][2] # 6
+arr[1, 2] # 6
+#### 负数下标
+nums = [[1, 3, 5, 7, 9], [2, 4, 6, 8, 10]]
+arr = np.array(nums)
+arr[-1][-1] # 10
+arr[-1][-2] # 8
+'''
+### 2.3.2 修改元素
+'''
+arr = np.array([[10, 20, 30], [40, 50, 60], [70, 80, 90]])
+arr[2][2] = 99        # [[10, 20, 30], [40, 50, 60], [70, 80, 99]]
+arr[1] = [44, 55, 66] # [[10, 20, 30], [44, 55, 66], [70, 80, 99]]
+'''
+### 2.3.3 添加元素 np.append(arr, value, axis=n)
+'''
+#### 一维数组
+arr = np.array([1, 2, 3, 4])
+np.append(arr, 5) # [1 2 3 4 5]
+#### 二维数组（axis=0）
+arr = np.array([[10, 20, 30, 40], [50, 60, 70, 80]])
+np.append(arr, [[11, 22, 33, 44]], axis=0) # [[10 20 30 40] [50 60 70 80] [11 22 33 44]]
+#### 二维数组（axis=1）
+arr = np.array([[10, 20, 30, 40], [50, 60, 70, 80]])
+np.append(arr, [[11, 22], [33, 44]], axis=1) # [[10 20 30 40 11 22] [50 60 70 80 33 44]]
+#### 二维数组（axis为空）
+##### append()会直接将两个数组“打平”成一维数组，然后进行合并
+arr = np.array([[10, 20, 30, 40], [50, 60, 70, 80]])
+np.append(arr, [11, 22, 33, 44])     # [10 20 30 40 50 60 70 80 11 22 33 44]
+np.append(arr, [[11, 22, 33, 44]])   # [10 20 30 40 50 60 70 80 11 22 33 44]
+np.append(arr, [[11, 22], [33, 44]]) # [10 20 30 40 50 60 70 80 11 22 33 44]
+'''
+
+
+
 # ------------------------ 读取数据库 ---------------------------
 '''
 import pymysql
@@ -155,6 +301,7 @@ print(result)
 '''
 
 # ---------------------------------- 第九章 时间序列 --------------------------------------
+"""
 ## 导入库
 import pandas as pd
 
@@ -281,23 +428,7 @@ pd.set_option("display.unicode.east_asian_width", True)
 ### print(df)
 print(result)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"""
 
 
 ## ------------------------ 求每个月的销量总和 ----------------------------
