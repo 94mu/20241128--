@@ -278,3 +278,49 @@ print("Accuracy: ", LR.score(x_test, y_test))
 print(classification_report(y_test, LR_y_predict, target_names=['benign', 'maligant']))
 
 '''
+
+#---------------------------------- 第九章 决策树 -------------------------------------
+
+#---------------------------------- 第十章 支持向量机 -------------------------------------
+# 用SVM分类预测乳腺癌
+## 导入相关库
+### 乳腺癌数据集
+from sklearn.datasets import load_breast_cancer
+### 数据分割器
+from sklearn.model_selection import train_test_split
+### 数据标准化
+from sklearn.preprocessing import StandardScaler
+### 支持向量机分类器
+from sklearn.svm import LinearSVC
+### 性能评估
+from sklearn.metrics import classification_report
+
+## 输入数据
+### 乳腺癌数据集
+breast_cancer = load_breast_cancer()
+### 分离目标变量和特征变量
+x = breast_cancer.data
+y = breast_cancer.target
+
+## 数据分割
+x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=33, test_size=0.3)
+print(x_train)
+
+## 数据预处理
+### 数据标准化
+breast_cancer_ss = StandardScaler()
+x_train = breast_cancer_ss.fit_transform(x_train)
+print(x_train)
+x_test = breast_cancer_ss.transform(x_test)
+
+## 模型训练
+### 初始化配置
+lsvc = LinearSVC()
+### 开始训练
+lsvc.fit(x_train, y_train)
+### 结果预测
+lsvc_y_predict = lsvc.predict(x_test)
+
+## 性能评估
+print("Accuracy: ", lsvc.score(x_test, y_test))
+print(classification_report(y_test, lsvc_y_predict, target_names=["bengin", "maligant"]))
