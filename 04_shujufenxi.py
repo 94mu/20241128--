@@ -370,6 +370,157 @@ result = np.sort(arr) # [10 15 22 36 40]
 '''
 """
 
+# -------------------------------------------- 三、NumPy进阶 -----------------------------------------------
+"""
+## 导入numpy库
+import numpy as np
+
+## 3.1 浅拷贝和深拷贝
+'''
+### 3.1.1 浅拷贝 arr.view()
+### 3.1.2 深拷贝 arr.copy()
+'''
+
+## 3.2 axis的值
+
+## 3.3 广播机制
+
+## 3.4 读写文件
+### 3.4.1 读取文件 np.loadtxt(path, delimiter="分隔符")
+### 读取出来的数据是浮点型数据。如果想要使得数据是整型数据，可以使用dtype=int来实现
+'''
+arr = np.loadtxt(r"data/test.csv", delimiter=",", dtype=int)
+'''
+### 3.4.2 写入文件 np.savetxt(path, arr, delimiter="分隔符")
+### 可以使用fmt="%d"使得数据都是整型数据
+'''
+arr = np.arange(9).reshape(3, 3)
+np.savetxt(r"data/arr.csv", arr, delimiter=",", fmt="%d")
+'''
+
+### 3.5 矩阵
+### 在NumPy中，矩阵和数组是两种不同的数据类型。虽然它们很相似，但是有着本质上的区别。数组是一个ndarray对象，矩阵是一个matrix对象。
+### 矩阵都是二维的，可以把它看成一种特殊的二维数组。NumPy官方建议，如果在某种情况下矩阵和数组都适用，那就选择数组。因为数组更加灵活，速度更快。
+### 对于矩阵，读者只需要了解一下基本创建方式就可以了，其他的不用过多了解，因为大多数情况下使用二维数组就可以完成工作。
+### 在NumPy中，不管是哪一种矩阵，都是使用matlib模块的方法来创建的。
+### 默认情况下，矩阵元素类型是浮点型，可以使用dtype=int将其类型定义成整型。
+'''
+#### 3.5.1 全0矩阵  np.matlib.zeros((m, n))
+#### 3.5.2 全1矩阵  np.matlib.ones((m, n))
+#### 3.5.3 单位矩阵 np.matlib.identity(m)
+#### 3.5.4 随机矩阵 np.matlib.rand(m, n) 矩阵的每一个元素的值都在0～1内
+'''
+"""
+
+# -------------------------------------------- 四、Pandas简介 -----------------------------------------------
+import pandas as pd
+
+
+## 4.2 Series
+## Series可以看成一种特殊的一维数组
+### 4.2.1 创建Series
+'''
+pd.Series(data, index=列表)
+#### （1）当data是一个列表时
+##### 不指定index的值
+se = pd.Series(["红", "绿", "蓝"])
+##### 指定index的值
+se = pd.Series(["红", "绿", "蓝"], index=["red", "green", "blue"])
+#### （2）当data是一个字典
+se = pd.Series({"小杰": 1001, "小红": 1002, "小明": 1003})
+'''
+### 4.2.2 Series属性
+'''
+se = pd.Series(["红", "绿", "蓝"], index=["red", "green", "blue"])
+se.index   # 行名
+se.values  # 数据
+'''
+### 4.2.3 获取某行的值
+'''
+se = pd.Series({"小杰": 1001, "小红": 1002, "小明": 1003})
+result = se.loc["小杰"]
+'''
+### 4.2.4 深入了解
+'''
+➤ 字典是无序的，而Series是有序的。
+➤ 字典的key是不可变的，而Series的index是可变的。
+➤ Series提供了大量的统计方法，但是字典没有。
+'''
+
+## 4.3 DataFrame
+### 4.3.1 创建DataFrame
+'''
+pd.DataFrame(data, index=列表, columns=列表)
+#### （1）data是一个列表
+#####     ① 列表的元素是列表
+data = [["小杰", "男", 20],    
+        ["小红", "女", 19],    
+        ["小明", "男", 21]]
+df = pd.DataFrame(data)
+#####      指定行名和列名
+data = [["小杰", "男", 20],    
+        ["小红", "女", 19],    
+        ["小明", "男", 21]]
+df = pd.DataFrame(data, index=["s1", "s2", "s3"], columns=["name", "gender", "age"])
+df = pd.DataFrame(data, index=["学生1", "学生2", "学生3"], columns=["姓名", "性别", "年龄"])
+#####     ② 列表的元素是字典
+data = [{"name": "小杰", "gender": "男", "age": 20},    
+        {"name": "小红", "gender": "女", "age": 19},    
+        {"name": "小明", "ender": "男", "age": 21}]
+df = pd.DataFrame(data)
+#####       指定行名
+df = pd.DataFrame(data, index=["s1", "s2", "s3"])
+#### （2）data是一个字典
+#### 当data是一个字典时，字典的key会作为DataFrame的列名，字典的value会作为DataFrame的数据。需要注意的是，字典的每一个value都要求是一个列表或者一个值。
+#####     ① value是一个列表
+data = {"name": ["小杰", "小红", "小明"], "gender": ["男", "女", "男"], "age": [20, 19, 21]}
+df = pd.DataFrame(data, index=["s1", "s2", "s3"])
+#####     ② value是一个值
+##### 如果字典的某一个value是一个值，那么这个值就会映射到每一行中。
+##### 对于data是一个字典这种情况，在实际开发中用得比较少，读者简单了解一下就可以了
+data = {"name": ["小杰", "小红", "小明"], "gender": ["男", "女", "男"], "age": [20, 19, 21], "class": "一班"}
+df = pd.DataFrame(data, index=["s1", "s2", "s3"])
+'''
+
+### 4.3.2 DataFrame的属性
+'''
+### dtypes、values、index、columns、shape、size 
+data = [["小杰", "男", 20],    
+        ["小红", "女", 19],    
+        ["小明", "男", 21]]
+df = pd.DataFrame(data, index=["s1", "s2", "s3"], columns=["name", "gender", "age"])
+#### 系统会把DataFrame每一列的类型分别列举出来。这里可以看出DataFrame非常重要的一个特点：不同列的数据类型可以不一样，但是同一列的数据类型一般要求相同。
+#### DataFrame的值会以数组的形式返回
+df.dtypes
+df.values
+#### 获取行名和列名
+df.index
+df.columns
+#### 获取行数和列数
+#### df.shape返回的是一个元组，第1个元素是行数，第2个元素是列数。查看行名和列名，以及查看行数和列数等操作在实际工作中会经常用到。
+df.shape
+df.shape[0]
+df.shape[1]
+#### 元素的个数
+df.size
+'''
+
+### 4.3.3 深入了解
+#### （1）文件格式
+'''
+#### 当data是一个列表时，如果想将DataFrame保存到文件中，一般是保存到CSV文件中
+#### 当data是一个字典时，如果想将DataFrame保存到文件中，一般是保存到JSON文件中
+'''
+#### （2）对齐输出
+'''
+#### 解决这种输出内容不对齐的问题，可以在print()语句的前一行加上下面这句代码：
+pd.set_option("display.unicode.east_asian_width", True)
+'''
+#### （3）不需要指定行名
+'''
+#### 在实际工作中，创建DataFrame时，一般需要指定列名，但不需要指定行名。如果不显式指定行名，那么它就是从0开始的连续整数。
+'''
+
 # ------------------------ 读取数据库 ---------------------------
 '''
 import pymysql
